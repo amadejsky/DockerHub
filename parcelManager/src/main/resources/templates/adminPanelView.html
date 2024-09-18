@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Parcel Flow Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</head>
+<style>
+    .bd{
+        width:100vw;
+        height:150vh;
+        background: url("/undraw_Messenger_re_8bky.png");
+        background-size: cover;
+        background-position: 120px center;
+    }
+    .senderInfo{
+        width: 20%;
+    }
+    .navbar{
+        width:100vw;
+    }
+    .navbar-brand{
+        color: black;
+    }
+    .navbar-nav .nav-link{
+        color: #F0F0F0;
+    }
+    .dataContainer{
+        padding: 2vw;
+        margin-top:7vh;
+        width:80%;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+    th{
+        width:2vw;
+    }
+    .line{
+        width: 100vw;
+        height: 0.6vh;
+        opacity: 1;
+        background-color: #ffcd00;
+    }
+    tbody{
+        border: 1px solid #6D214F;
+
+    }
+    @media (max-width: 683px) {
+        .dataContainer{
+            width:80%;
+        }
+    }
+    @media (max-width: 499px) {
+        .dataContainer{
+            width:100%;
+        }
+    }
+    @media (max-width: 400px) {
+       .navbar-brand{
+           font-size: 4.3vw;
+       }
+    }
+    @media (max-width: 384px) {
+        th{
+            font-size: 3vw;
+        }
+    }
+    @media (max-width: 384px) {
+        th{
+            width: 50%;
+            font-size: 3vw;
+        }
+        td{
+            width: 50%;
+            font-size: 3vw;
+        }
+        tr{
+            width: 50%;
+            font-size: 3vw;
+        }
+    }
+
+</style>
+<body class="d-flex flex-column min-vh-100">
+<nav class="navbar navbar-expand-lg" style="background-color: #ffffff">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><b>&nbsp;Parcel Flow</b></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+        </div>
+    </div>
+</nav>
+<hr class="line">
+<div class="bd">
+    <div class="dataContainer">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Status</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Code</th>
+                <th>Weight (kg)</th>
+                <th>Sender info</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="parcel : ${parcel}">
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span th:text="${parcel.status}">Status</span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" th:href="@{/admin-tool/update-status/{code}(code=${parcel.code}, status='PENDING')}" href="#">Pending</a></li>
+                            <li><a class="dropdown-item" th:href="@{/admin-tool/update-status/{code}(code=${parcel.code}, status='SHIPPED')}" href="#">Shipped</a></li>
+                            <li><a class="dropdown-item" th:href="@{/admin-tool/update-status/{code}(code=${parcel.code}, status='SENT_FROM_FACILITY')}" href="#">Sent from facility</a></li>
+                            <li><a class="dropdown-item" th:href="@{/admin-tool/update-status/{code}(code=${parcel.code}, status='OUT_FOR_DELIVERY')}" href="#">Out for delivery</a></li>
+                            <li><a class="dropdown-item" th:href="@{/admin-tool/update-status/{code}(code=${parcel.code}, status='DELIVERED')}" href="#">Delivered</a></li>
+                            <li><a class="dropdown-item" th:href="@{/admin-tool/update-status/{code}(code=${parcel.code}, status='DELAYED')}" href="#">Delayed</a></li>
+                            <li><a class="dropdown-item" th:href="@{/admin-tool/update-status/{code}(code=${parcel.code}, status='INACTIVE')}" href="#">Inactive</a></li>
+                        </ul>
+                    </div>
+                </td>
+                <td th:text="${parcel.address}">Address</td>
+                <td th:text="${parcel.email}">Email</td>
+                <td th:text="${parcel.code}">Code</td>
+                <td th:text="${parcel.weight}">Weight</td>
+                <td class="senderInfo" th:text="${parcel.senderName}+${parcel.senderLastName}+${parcel.senderAddress}">Sender info</td>
+                <td>
+                <a th:href="@{/admin-tool/delete/{code}(code=${parcel.code})}" class="btn btn-outline-danger btn-sm">
+                    <i class="fas fa-user-times ml-2">Delete</i>
+                </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div class="footer"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+</body>
+</html>
